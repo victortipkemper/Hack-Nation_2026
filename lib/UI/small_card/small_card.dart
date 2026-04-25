@@ -4,21 +4,32 @@ class ShopData {
   final String id;
   final String name;
   final String description;
+  final (double, double) location;
+  final DateTime openingTime;
+  final DateTime closingTime;
   final String couponAmount;
   final List<String> tags;
   final String? imageUrl;
   final int? rank;
+  final String category;
+  final double payone_z_score
 
   const ShopData({
     required this.id,
     required this.name,
     required this.description,
     required this.couponAmount,
+    required this.location,
+    required this.openingTime,
+    required this.closingTime,
     required this.tags,
     this.imageUrl,
     this.rank,
+    this.category,
+    this.payone_z_score
   });
 }
+
 
 class SmallCard extends StatelessWidget {
   final ShopData shopData;
