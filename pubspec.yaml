@@ -41,7 +41,8 @@ dependencies:
   hive_ce_flutter: ^2.3.4
   path_provider: ^2.1.5
   flutter_local_notifications: ^17.0.0
-  nobodywho: ^0.1.0
+  nobodywho: 0.5.3-rc1
+  geolocator: ^14.0.2
 
 dev_dependencies:
   flutter_test:
