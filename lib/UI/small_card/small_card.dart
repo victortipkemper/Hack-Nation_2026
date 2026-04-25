@@ -15,7 +15,7 @@ class ShopData {
   final String? imageUrl;
   final int? rank;
   final String category;
-  final double payone_z_score
+  final double payone_z_score;
 
   const ShopData({
     required this.id,
@@ -28,8 +28,8 @@ class ShopData {
     required this.tags,
     this.imageUrl,
     this.rank,
-    this.category,
-    this.payone_z_score
+    required this.category,
+    required this.payone_z_score
   });
 }
 
@@ -66,7 +66,7 @@ class SmallCard extends StatelessWidget {
             if (onClick != null) {
               onClick!(shopData);
             }
-            Get.to(() => const DetailPage());
+            Get.to(() => DetailPage(shopData: shopData));
           },
           child: Row(
             children: [
