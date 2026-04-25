@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../screens/detail_page.dart';
+
 
 class ShopData {
   final String id;
@@ -22,12 +25,12 @@ class ShopData {
 
 class SmallCard extends StatelessWidget {
   final ShopData shopData;
-  final ValueChanged<ShopData> onClick;
+  final ValueChanged<ShopData>? onClick;
 
   const SmallCard({
     super.key,
     required this.shopData,
-    required this.onClick,
+    this.onClick,
   });
 
   @override
@@ -48,7 +51,12 @@ class SmallCard extends StatelessWidget {
           ),
         ),
         child: InkWell(
-          onTap: () => onClick(shopData),
+          onTap: () {
+            if (onClick != null) {
+              onClick!(shopData);
+            }
+            Get.to(() => const DetailPage());
+          },
           child: Row(
             children: [
               // Image Section
