@@ -7,6 +7,7 @@ class ShopData {
   final String couponAmount;
   final List<String> tags;
   final String? imageUrl;
+  final int? rank;
 
   const ShopData({
     required this.id,
@@ -15,6 +16,7 @@ class ShopData {
     required this.couponAmount,
     required this.tags,
     this.imageUrl,
+    this.rank,
   });
 }
 
@@ -71,15 +73,33 @@ class SmallCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Distribute evenly, replacing Spacer
                     children: [
-                      Text(
-                        shopData.name,
-                        style: theme.textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onSurface,
-                          height: 1.1, // Tighter line height
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      Row(
+                        children: [
+                          if (shopData.rank != null)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 6.0),
+                              child: Text(
+                                '#${shopData.rank}',
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  color: colorScheme.primary,
+                                  height: 1.1,
+                                ),
+                              ),
+                            ),
+                          Expanded(
+                            child: Text(
+                              shopData.name,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: colorScheme.onSurface,
+                                height: 1.1, // Tighter line height
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
                       ),
                       Flexible( // Allows description to shrink or be hidden if space is too tight
                         child: Text(
@@ -130,7 +150,7 @@ class SmallCard extends StatelessWidget {
 
               // Coupon Amount Section
               Container(
-                width: 80, // Fixed width for the coupon section
+                width: 55, // Smaller fixed width for the coupon section
                 decoration: BoxDecoration(
                   color: colorScheme.primaryContainer,
                   borderRadius: const BorderRadius.only(
@@ -139,25 +159,27 @@ class SmallCard extends StatelessWidget {
                   ),
                 ),
                 alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      shopData.couponAmount,
-                      style: theme.textTheme.titleLarge?.copyWith(
-                        color: colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.bold,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        "${shopData.couponAmount}%",
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          color: colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       'OFF',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.onPrimaryContainer.withOpacity(0.8),
                         fontWeight: FontWeight.bold,
-                        letterSpacing: 1.2,
+                        letterSpacing: 0.5,
+                        fontSize: 9,
                       ),
                     ),
                   ],

@@ -42,7 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
       description: 'A curated collection of mid-century modern furniture and rare vinyl records.',
       couponAmount: '15',
       tags: ['Vintage', 'Furniture', 'Home Decor'],
-      imageUrl: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5db',
+      imageUrl: 'https://baristaroyal.de/cdn/shop/articles/2022-04-28-Cafe_Guide_Munchen-unsplash-218506.jpg?v=1719300386&width=1500',
+      rank: 1
     );
     return Scaffold(
       body: Center(
