@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:nobodywho/nobodywho.dart' as nobodywho;
 import 'package:path_provider/path_provider.dart';
-import '../models/shop.dart';
+import '../UI/small_card/small_card.dart';
 
 class MessageCreationService {
   nobodywho.Chat? _chatEngine;
@@ -33,7 +33,7 @@ class MessageCreationService {
     required DateTime time,
     required double rain,
     required double temperature,
-    required Shop recommendedShop,
+    required ShopData recommendedShop,
   }) async {
     // 1. Construct the prompt for the language model
     String weatherContext = rain > 0 ? "It's raining outside." : "The weather is clear.";

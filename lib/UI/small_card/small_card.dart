@@ -10,7 +10,7 @@ class ShopData {
   final (double, double) location;
   final DateTime openingTime;
   final DateTime closingTime;
-  final String couponAmount;
+  final double couponAmount; // in percentage, e.g. 20.0 for 20% off
   final List<String> tags;
   final String? imageUrl;
   final int? rank;
