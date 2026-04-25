@@ -36,6 +36,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     const mockShop = ShopData(
       id: 'shop-123',
       name: 'The Vintage Vault',
@@ -46,23 +48,25 @@ class _MyHomePageState extends State<MyHomePage> {
       rank: 1
     );
     return Scaffold(
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Column(
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
 
-              children: [
-                SizedBox(height: 32,),
-                SmallCard(
-                  shopData: mockShop,
-                  onClick: (ShopData value) {  },)
-              ],
+            children: [
+              SizedBox(height: 40,),
+              Text(
+                "Current recommendations",
+                style: theme.textTheme.titleMedium
+              ),
+              SizedBox(height: 8,),
+              SmallCard(
+                shopData: mockShop,
+                onClick: (ShopData value) {  },)
+            ],
 
-                ),
-        )
-    )
+              ),
+      )
     );
   }
 }
