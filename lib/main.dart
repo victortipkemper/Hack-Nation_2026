@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'UI/small_card/small_card.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -34,14 +36,31 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
+    const mockShop = ShopData(
+      id: 'shop-123',
+      name: 'The Vintage Vault',
+      description: 'A curated collection of mid-century modern furniture and rare vinyl records.',
+      couponAmount: '15',
+      tags: ['Vintage', 'Furniture', 'Home Decor'],
+      imageUrl: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5db',
+    );
     return Scaffold(
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: Column(
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
 
-      )
+              children: [
+                SizedBox(height: 32,),
+                SmallCard(
+                  shopData: mockShop,
+                  onClick: (ShopData value) {  },)
+              ],
+
+                ),
+        )
     )
     );
   }
