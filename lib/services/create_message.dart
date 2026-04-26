@@ -34,36 +34,16 @@ class MessageCreationService {
   }
 
 
-
-
-  /// Generates a push notification text using context and a recommended shop.
+    /// Generates a push notification text using context and a recommended shop.
   Future<String> generatePushNotification({
     required DateTime time,
     required double rain,
     required double temperature,
     required ShopData recommendedShop,
     required double couponAmount
-  }) async{
-      return "What a great sunny day. Check out GymCook and get a discount of 20% !";
-   
-}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  }) async {
+    return "Do you want to sweeten your break? 30% discount on breads.";
+  }
 
   /// Generates a push notification text using context and a recommended shop.
   Future<String> generatePushNotification2({

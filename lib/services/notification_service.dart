@@ -97,6 +97,7 @@ class NotificationService {
       rain: rain,
       temperature: temperature,
       recommendedShop: recommendedShop,
+      couponAmount: 15.0
     );
 
     await showNotification(
@@ -127,7 +128,7 @@ class NotificationService {
           temperature: 20.0,
           recommendedShop: ShopData(
             id: 'test',
-            name: 'Test Shop',
+            name: 'Gym Cook',
             description: 'Test shop description',
             location: (0.0, 0.0),
             openingTime: DateTime.now(),
