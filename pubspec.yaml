@@ -43,6 +43,7 @@ dependencies:
   flutter_local_notifications: ^17.0.0
   nobodywho: 0.5.3-rc1
   geolocator: ^14.0.2
+  permission_handler: ^11.4.4
 
 dev_dependencies:
   flutter_test:
