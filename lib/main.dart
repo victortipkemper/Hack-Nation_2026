@@ -94,7 +94,7 @@ void main() async {
     weatherTemp: '22°C',
     weatherCategory: 'sunny',
     travelTime: '12 min',
-    message: msg,
+    msg: msg,
   );
 
   // Determine initial route based on userType in Hive
