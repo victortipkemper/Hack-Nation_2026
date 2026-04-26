@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -14,6 +15,9 @@ class NotificationService {
 
   Future<void> initialize() async {
     _notificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    // Request notification permission on Android 13+
+    await _requestNotificationPermission();
 
     // Initialize for Android
     const AndroidInitializationSettings androidSettings =
@@ -33,6 +37,17 @@ class NotificationService {
     );
 
     await _notificationsPlugin.initialize(initSettings);
+  }
+
+  Future<void> _requestNotificationPermission() async {
+    final status = await Permission.notification.request();
+    if (status.isDenied) {
+      // Permission denied
+      print('Notification permission denied');
+    } else if (status.isPermanentlyDenied) {
+      // Permission permanently denied, open app settings
+      openAppSettings();
+    }
   }
 
   Future<void> showNotification({

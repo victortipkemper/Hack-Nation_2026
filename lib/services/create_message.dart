@@ -1,9 +1,12 @@
 // NOTE: Make sure to run `flutter pub add nobodywho` in your terminal!
+// download model into /assets from https://huggingface.co/NobodyWho/Google_Gemma3-270M-GGUF/tree/main
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:nobodywho/nobodywho.dart' as nobodywho;
 import 'package:path_provider/path_provider.dart';
 import '../UI/small_card/small_card.dart';
+
+
 
 class MessageCreationService {
   nobodywho.Chat? _chatEngine;
