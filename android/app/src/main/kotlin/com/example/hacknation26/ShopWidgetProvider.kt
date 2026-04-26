@@ -1,13 +1,12 @@
 package com.example.hacknation26
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.RemoteViews
+import es.antonborri.home_widget.HomeWidgetLaunchIntent
 import es.antonborri.home_widget.HomeWidgetProvider
 
 class ShopWidgetProvider : HomeWidgetProvider() {
@@ -31,15 +30,13 @@ class ShopWidgetProvider : HomeWidgetProvider() {
                 }
             }
 
-            // Set up click intent to open the app with shop id
-            val shopId = widgetData.getString("shop_id", null)
-            val intent = Intent(context, MainActivity::class.java).apply {
-                data = Uri.parse("hacknation://shop/$shopId")
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            }
-            val pendingIntent = PendingIntent.getActivity(
-                context, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            // Use HomeWidgetLaunchIntent — this is intercepted by the home_widget
+            // package and delivered to Flutter via HomeWidget.widgetClicked stream
+            val shopId = widgetData.getString("shop_id", "") ?: ""
+            val pendingIntent = HomeWidgetLaunchIntent.getActivity(
+                context,
+                MainActivity::class.java,
+                Uri.parse("hacknation://shop/$shopId")
             )
             views.setOnClickPendingIntent(R.id.widget_root, pendingIntent)
 

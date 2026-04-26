@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
-import 'UI/small_card/small_card.dart';
+import 'package:home_widget/home_widget.dart';
 import 'UI/user/user_main.dart';
 import 'UI/merchant/merchant_main.dart';
 import 'UI/qr_code_validation/validation.dart';
 import 'UI/screens/startup_screen.dart';
+import 'UI/screens/detail_page.dart';
 import 'services/notification_service.dart';
+import 'services/shop_service.dart';
 import 'widget/main_widget.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,23 +21,12 @@ void callbackDispatcher() {
     final notificationService = NotificationService();
     await notificationService.initialize(isBackground: true);
 
+    final shops = ShopService.fetchShops();
     await notificationService.showGeneratedNotification(
       time: DateTime.now(),
       rain: 0.0,
       temperature: 20.0,
-      recommendedShop: ShopData(
-        id: 'test',
-        name: 'Test Shop',
-        description: 'Test shop description',
-        location: (0.0, 0.0),
-        openingTime: DateTime.now(),
-        closingTime: DateTime.now(),
-        tags: [],
-        imageUrl: null,
-        category: 'Cafe',
-        payone_z_score: 0.0,
-        couponAmount: 10.0,
-      ),
+      recommendedShop: shops.first,
       id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
     );
     return Future.value(true);
@@ -68,33 +59,20 @@ void main() async {
   await notificationService.initialize();
   notificationService.startTestNotifications();
 
-  // Mock shop data for the home screen widget
-  final widgetShop = ShopData(
-    id: "shop_vibe_77",
-    name: "Neon Espresso & Co.",
-    description: "A futuristic coffee lounge featuring cyber-industrial aesthetics, premium roasts, and high-speed fiber for power users.",
-    couponAmount: 15,
-    location: (48.135122, 11.581981),
-    openingTime: DateTime(2026, 4, 26, 08, 00),
-    closingTime: DateTime(2026, 4, 26, 23, 30),
-    tags: ["Premium", "Fast WiFi", "Quiet Zone", "Late Night"],
-    imageUrl: "https://baristaroyal.de/cdn/shop/articles/2022-04-28-Cafe_Guide_Munchen-unsplash-218506.jpg?v=1719300386&width=1500",
-    rank: 1,
-    category: "Food & Beverage",
-    payone_z_score: 2.84,
-  );
-
-  // Update home screen widget
-  ShopHomeWidget.update(
-    shopData: widgetShop,
-    weatherTemp: '22°C',
-    weatherCategory: 'sunny',
-    travelTime: '12 min',
-  );
+  // Update home screen widget with first shop
+  final shops = ShopService.fetchShops();
+  if (shops.isNotEmpty) {
+    ShopHomeWidget.update(
+      shopData: shops.first,
+      weatherTemp: '22°C',
+      weatherCategory: 'sunny',
+      travelTime: '12 min',
+    );
+  }
 
   // Determine initial route based on userType in Hive
   final box = Hive.box('settings');
-  final userType = box.get('userType'); // null if not set, 0 = user, 1 = seller
+  final userType = box.get('userType');
 
   String initialRoute;
   if (userType == null) {
@@ -108,12 +86,39 @@ void main() async {
   runApp(MyApp(initialRoute: initialRoute));
 }
 
-class MyApp extends StatelessWidget {
-  final String initialRoute;
+/// Handles the URI received from a home widget click.
+void _handleWidgetUri(Uri? uri) {
+  if (uri == null) return;
+  // URI format: hacknation://shop/{shopId}
+  if (uri.host == 'shop') {
+    final shopId = uri.pathSegments.isNotEmpty ? uri.pathSegments.first : '';
+    final shop = ShopService.findById(shopId);
+    if (shop != null) {
+      Get.to(() => DetailPage(shopData: shop));
+    }
+  }
+}
 
+class MyApp extends StatefulWidget {
+  final String initialRoute;
   const MyApp({super.key, required this.initialRoute});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Check if app was cold-launched from a widget click
+    HomeWidget.initiallyLaunchedFromHomeWidget().then(_handleWidgetUri);
+
+    // Listen for widget clicks while app is already running
+    HomeWidget.widgetClicked.listen(_handleWidgetUri);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -121,7 +126,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      initialRoute: initialRoute,
+      initialRoute: widget.initialRoute,
       getPages: [
         GetPage(name: '/startup', page: () => const StartupScreen()),
         GetPage(name: '/user', page: () => const UserMainPage()),
