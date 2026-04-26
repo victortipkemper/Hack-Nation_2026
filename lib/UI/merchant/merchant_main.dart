@@ -4,7 +4,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 /// Hardcoded expected QR code value for validation.
-const String _expectedQrCode = 'HACKNATION-COUPON-2026';
+const String _expectedQrCode = 'shop_vibe_77';
 
 class MerchantMainPage extends StatefulWidget {
   const MerchantMainPage({super.key});

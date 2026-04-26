@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "59936558186",
+    "project_id": "hacknation26",
+    "storage_bucket": "hacknation26.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59936558186:android:c6d8c0bf198cd763018e13",
+        "android_client_info": {
+          "package_name": "com.example.hacknation26"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoSfO_DuKvrMQFU6J_qzp9FMWp7SRIT6k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
