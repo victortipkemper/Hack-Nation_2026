@@ -194,20 +194,6 @@ class _ShopWidgetCard extends StatelessWidget {
                       decoration: TextDecoration.none,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  // Description
-                  Text(
-                    shopData.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: Color(0xBBFFFFFF),
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                      height: 1.3,
-                      decoration: TextDecoration.none,
-                    ),
-                  ),
                   const SizedBox(height: 8),
                   // Message text from LLM
                   if (message.isNotEmpty)
