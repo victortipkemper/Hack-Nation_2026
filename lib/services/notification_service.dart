@@ -1,10 +1,13 @@
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'create_message.dart';
+import '../UI/small_card/small_card.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   late FlutterLocalNotificationsPlugin _notificationsPlugin;
+  late MessageCreationService _messageService;
   Timer? _notificationTimer;
 
   factory NotificationService() {
@@ -15,6 +18,7 @@ class NotificationService {
 
   Future<void> initialize() async {
     _notificationsPlugin = FlutterLocalNotificationsPlugin();
+    _messageService = MessageCreationService();
 
     // Request notification permission on Android 13+
     await _requestNotificationPermission();
@@ -79,6 +83,27 @@ class NotificationService {
     );
   }
 
+  Future<void> showGeneratedNotification({
+    required DateTime time,
+    required double rain,
+    required double temperature,
+    required ShopData recommendedShop,
+    int id = 0,
+  }) async {
+    final generatedMessage = await _messageService.generatePushNotification(
+      time: time,
+      rain: rain,
+      temperature: temperature,
+      recommendedShop: recommendedShop,
+    );
+
+    await showNotification(
+      title: recommendedShop.name,
+      body: generatedMessage,
+      id: id,
+    );
+  }
+
   void startTestNotifications() {
     // Cancel any existing timer
     _notificationTimer?.cancel();
@@ -94,9 +119,23 @@ class NotificationService {
     _notificationTimer = Timer.periodic(
       const Duration(seconds: 30),
       (timer) {
-        showNotification(
-          title: 'Test Notification',
-          body: 'test notification',
+        showGeneratedNotification(
+          time: DateTime.now(),
+          rain: 0.0,
+          temperature: 20.0,
+          recommendedShop: ShopData(
+            id: 'test',
+            name: 'Test Shop',
+            description: 'Test shop description',
+            location: (0.0, 0.0),
+            openingTime: DateTime.now(),
+            closingTime: DateTime.now(),
+            tags: [],
+            imageUrl: null,
+            category: 'Cafe',
+            payone_z_score: 0.0,
+            couponAmount: 10.0,
+          ),
           id: timer.tick,
         );
       },
