@@ -149,6 +149,44 @@ class NotificationService {
     _notificationTimer = null;
   }
 
+  /// Starts real notifications using actual shop data from main.dart
+  /// Publishes first notification immediately, then every 30 seconds
+  /// 
+  /// [shopData] - The shop data to use for notifications
+  /// [temperature] - Current temperature in Celsius (default: 22.0)
+  /// [rain] - Rain amount in mm (default: 0.0)
+  void startRealNotifications({
+    required ShopData shopData,
+    double temperature = 22.0,
+    double rain = 0.0,
+  }) {
+    // Cancel any existing timer
+    _notificationTimer?.cancel();
+
+    // Publish first notification immediately
+    showGeneratedNotification(
+      time: DateTime.now(),
+      rain: rain,
+      temperature: temperature,
+      recommendedShop: shopData,
+      id: 1,
+    );
+
+    // Then publish every 30 seconds
+    _notificationTimer = Timer.periodic(
+      const Duration(seconds: 30),
+      (timer) {
+        showGeneratedNotification(
+          time: DateTime.now(),
+          rain: rain,
+          temperature: temperature,
+          recommendedShop: shopData,
+          id: timer.tick,
+        );
+      },
+    );
+  }
+
   Future<void> dispose() async {
     stopTestNotifications();
   }

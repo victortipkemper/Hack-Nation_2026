@@ -48,9 +48,10 @@ Context:
 - Time: ${time.hour}:${time.minute.toString().padLeft(2, '0')}
 - Weather: $temperature°C, $weatherContext
 - Recommended Shop: ${recommendedShop.name} (Category: ${recommendedShop.category})
+- Coupon Amount: ${recommendedShop.couponAmount}% off
 
-Generate a short, friendly, and engaging push notification (max 150 characters) 
-suggesting the user to visit this shop right now.
+Generate a short, friendly, and engaging push notification (max 100 characters) 
+suggesting the user to visit this shop right now. Include the context and coupon amount.
 ''';
 
     // 2. Ensure model is initialized
