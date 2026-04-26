@@ -7,6 +7,7 @@ import 'UI/merchant/merchant_main.dart';
 import 'UI/qr_code_validation/validation.dart';
 import 'UI/screens/startup_screen.dart';
 import 'services/notification_service.dart';
+import 'services/create_message.dart';
 import 'widget/main_widget.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -78,12 +79,22 @@ void main() async {
     payone_z_score: 2.84,
   );
 
+  // Generate widget text using the message creation service
+  final messageService = MessageCreationService();
+  String msg = await messageService.generateWidgetText(
+    time: DateTime.now(),
+    rain: 0.0,
+    temperature: 22.0,
+    recommendedShop: widgetShop,
+  );
+
   // Update home screen widget
   ShopHomeWidget.update(
     shopData: widgetShop,
     weatherTemp: '22°C',
     weatherCategory: 'sunny',
     travelTime: '12 min',
+    message: msg,
   );
 
   // Determine initial route based on userType in Hive
