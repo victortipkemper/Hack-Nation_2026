@@ -9,6 +9,8 @@ import 'UI/screens/startup_screen.dart';
 import 'services/notification_service.dart';
 import 'widget/main_widget.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
@@ -42,6 +44,10 @@ void callbackDispatcher() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   Workmanager().initialize(
     callbackDispatcher,
