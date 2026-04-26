@@ -14,6 +14,8 @@ class MessageCreationService {
   /// Initializes the local LLM. You should ideally call this once when your app starts.
   Future<void> initModel() async {
     if (_chatEngine != null) return;
+
+    await nobodywho.NobodyWho.init();
     
     // NobodyWho reads the model from the filesystem, so we copy it from 
     // Flutter's asset bundle to the app's documents directory on first launch.

@@ -4,6 +4,7 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'UI/small_card/small_card.dart';
 import 'UI/user/user_main.dart';
 import 'UI/merchant/merchant_main.dart';
+import 'UI/qr_code_validation/validation.dart';
 import 'UI/screens/startup_screen.dart';
 import 'services/notification_service.dart';
 import 'widget/main_widget.dart';
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/startup', page: () => const StartupScreen()),
         GetPage(name: '/user', page: () => const UserMainPage()),
         GetPage(name: '/merchant', page: () => const MerchantMainPage()),
+        GetPage(name: '/validation', page: () => const ValidationScreen()),
       ],
     );
   }
