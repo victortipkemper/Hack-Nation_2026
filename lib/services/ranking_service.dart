@@ -17,6 +17,7 @@ class RankingService {
   })  {
     if (shops.isEmpty) return null;
 
+
     ShopData? bestShop;
     double highestScore = -1.0;
 
