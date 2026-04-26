@@ -13,6 +13,7 @@ class ShopHomeWidget {
     String? weatherTemp,
     String? weatherCategory,
     String? travelTime,
+    String? msg,
   }) async {
     // Save the shop id so the native side can build the click intent
     await HomeWidget.saveWidgetData<String>('shop_id', shopData.id);
@@ -24,6 +25,7 @@ class ShopHomeWidget {
         weatherTemp: weatherTemp ?? '--°C',
         weatherCategory: weatherCategory ?? 'sunny',
         travelTime: travelTime ?? '-- min',
+        message: msg ?? '',
       ),
       key: _imageKey,
       logicalSize: const Size(380, 200),
@@ -43,12 +45,14 @@ class _ShopWidgetCard extends StatelessWidget {
   final String weatherTemp;
   final String weatherCategory;
   final String travelTime;
+  final String message;
 
   const _ShopWidgetCard({
     required this.shopData,
     required this.weatherTemp,
     required this.weatherCategory,
     required this.travelTime,
+    required this.message,
   });
 
   IconData _weatherIcon() {
@@ -204,6 +208,21 @@ class _ShopWidgetCard extends StatelessWidget {
                       decoration: TextDecoration.none,
                     ),
                   ),
+                  const SizedBox(height: 8),
+                  // Message text from LLM
+                  if (message.isNotEmpty)
+                    Text(
+                      message,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        color: Color(0xDDFFFFFF),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        height: 1.2,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
                   const SizedBox(height: 8),
                   // Bottom label
                   Text(
