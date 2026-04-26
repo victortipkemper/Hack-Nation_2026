@@ -33,12 +33,45 @@ class MessageCreationService {
     );
   }
 
+
+
+
   /// Generates a push notification text using context and a recommended shop.
   Future<String> generatePushNotification({
     required DateTime time,
     required double rain,
     required double temperature,
     required ShopData recommendedShop,
+    required double couponAmount
+  }) async{
+      return "What a great sunny day. Check out GymCook and get a discount of 20% !";
+   
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /// Generates a push notification text using context and a recommended shop.
+  Future<String> generatePushNotification2({
+    required DateTime time,
+    required double rain,
+    required double temperature,
+    required ShopData recommendedShop,
+    required double couponAmount
   }) async {
     // 1. Construct the prompt for the language model
     String weatherContext = rain > 0 ? "It's raining outside." : "The weather is clear.";
@@ -48,6 +81,7 @@ Context:
 - Time: ${time.hour}:${time.minute.toString().padLeft(2, '0')}
 - Weather: $temperature°C, $weatherContext
 - Recommended Shop: ${recommendedShop.name} (Category: ${recommendedShop.category})
+
 
 Generate a short, friendly, and engaging push notification (max 150 characters) 
 suggesting the user to visit this shop right now.
