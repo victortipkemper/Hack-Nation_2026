@@ -9,6 +9,9 @@ import 'UI/screens/startup_screen.dart';
 import 'services/notification_service.dart';
 import 'services/create_message.dart';
 import 'widget/main_widget.dart';
+import 'services/database_service.dart';
+import 'package:home_widget/home_widget.dart';
+import 'UI/screens/detail_page.dart';
 import 'package:workmanager/workmanager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -85,6 +88,32 @@ void main() async {
     payone_z_score: 2.84,
   );
 
+  // Initialize Database Service and store mock shop
+  final dbService = DatabaseService();
+  await dbService.initialize();
+  await dbService.addOrUpdateShop(widgetShop);
+
+  // Set up HomeWidget click handling
+  HomeWidget.widgetClicked.listen((Uri? uri) {
+    if (uri != null && uri.scheme == 'hacknation' && uri.host == 'shop') {
+      final shopId = uri.pathSegments.last;
+      _openShopDetail(shopId, dbService);
+    }
+  });
+
+  // Check if launched from widget
+  try {
+    final initialUri = await HomeWidget.initiallyLaunchedFromHomeWidget();
+    if (initialUri != null && initialUri.scheme == 'hacknation' && initialUri.host == 'shop') {
+      final shopId = initialUri.pathSegments.last;
+      Future.delayed(const Duration(seconds: 1), () {
+        _openShopDetail(shopId, dbService);
+      });
+    }
+  } catch (e) {
+    print('Failed to check initial widget launch: $e');
+  }
+
   // Generate widget text using the message creation service
   final messageService = MessageCreationService();
   String msg = await messageService.generateWidgetText(
@@ -140,5 +169,15 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/validation', page: () => const ValidationScreen()),
       ],
     );
+  }
+}
+
+void _openShopDetail(String shopId, DatabaseService db) {
+  final shop = db.getShopById(shopId);
+  if (shop != null) {
+    Get.to(() => DetailPage(shopData: shop));
+  } else {
+    // Fallback if shop data is missing
+    print("Shop not found in local DB.");
   }
 }

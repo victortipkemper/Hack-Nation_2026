@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:get/get.dart';
 import 'create_message.dart';
+import 'database_service.dart';
+import '../UI/screens/detail_page.dart';
 import '../UI/small_card/small_card.dart';
 
 class NotificationService {
@@ -42,7 +45,19 @@ class NotificationService {
       iOS: iosSettings,
     );
 
-    await _notificationsPlugin.initialize(initSettings);
+    await _notificationsPlugin.initialize(
+      initSettings,
+      onDidReceiveNotificationResponse: (NotificationResponse response) async {
+        if (response.payload != null) {
+          final db = DatabaseService();
+          await db.initialize();
+          final shop = db.getShopById(response.payload!);
+          if (shop != null) {
+            Get.to(() => DetailPage(shopData: shop));
+          }
+        }
+      },
+    );
   }
 
   Future<void> _requestNotificationPermission() async {
@@ -60,6 +75,7 @@ class NotificationService {
     required String title,
     required String body,
     int id = 0,
+    String? payload,
   }) async {
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
@@ -82,6 +98,7 @@ class NotificationService {
       title,
       body,
       details,
+      payload: payload,
     );
   }
 
@@ -98,11 +115,12 @@ class NotificationService {
       temperature: temperature,
       recommendedShop: recommendedShop,
     );
-    String title = recommendedShop.name + 'awaits you!';
+    String title = recommendedShop.name + ' awaits you!';
     await showNotification(
       title: title,
       body: generatedMessage,
       id: id,
+      payload: recommendedShop.id,
     );
   }
 
