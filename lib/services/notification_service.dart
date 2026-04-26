@@ -98,9 +98,9 @@ class NotificationService {
       temperature: temperature,
       recommendedShop: recommendedShop,
     );
-
+    String title = recommendedShop.name + 'awaits you!';
     await showNotification(
-      title: recommendedShop.name,
+      title: title,
       body: generatedMessage,
       id: id,
     );
