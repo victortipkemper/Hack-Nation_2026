@@ -2,7 +2,14 @@
 
 **NUDGE** is a privacy-first, AI-powered platform that reconnects urban customers with independent local merchants at the precise moment both sides need each other—using real-time anomaly detection, on-device machine learning, and merchant-triggered demand signals to solve the retail invisibility crisis in Germany's urban centers.
 
+## Creators
 
+This project was created by:
+
+- Dibbo-Mrinmoy Saha
+- Moritz Soppe
+- Richard Oehmichen
+- Victor Tipkemper
 
 
 ## The Problem
