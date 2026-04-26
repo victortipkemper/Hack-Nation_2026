@@ -8,9 +8,50 @@ import 'UI/qr_code_validation/validation.dart';
 import 'UI/screens/startup_screen.dart';
 import 'services/notification_service.dart';
 import 'widget/main_widget.dart';
+import 'package:workmanager/workmanager.dart';
+
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    WidgetsFlutterBinding.ensureInitialized();
+    final notificationService = NotificationService();
+    await notificationService.initialize(isBackground: true);
+
+    await notificationService.showGeneratedNotification(
+      time: DateTime.now(),
+      rain: 0.0,
+      temperature: 20.0,
+      recommendedShop: ShopData(
+        id: 'test',
+        name: 'Test Shop',
+        description: 'Test shop description',
+        location: (0.0, 0.0),
+        openingTime: DateTime.now(),
+        closingTime: DateTime.now(),
+        tags: [],
+        imageUrl: null,
+        category: 'Cafe',
+        payone_z_score: 0.0,
+        couponAmount: 10.0,
+      ),
+      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+    );
+    return Future.value(true);
+  });
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  Workmanager().initialize(
+    callbackDispatcher,
+    isInDebugMode: true,
+  );
+  Workmanager().registerPeriodicTask(
+    "background_notification_task",
+    "simplePeriodicTask",
+    frequency: const Duration(minutes: 15),
+  );
 
   // Initialize Hive
   await Hive.initFlutter();

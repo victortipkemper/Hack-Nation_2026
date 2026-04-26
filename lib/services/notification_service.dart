@@ -16,12 +16,14 @@ class NotificationService {
 
   NotificationService._internal();
 
-  Future<void> initialize() async {
+  Future<void> initialize({bool isBackground = false}) async {
     _notificationsPlugin = FlutterLocalNotificationsPlugin();
     _messageService = MessageCreationService();
 
-    // Request notification permission on Android 13+
-    await _requestNotificationPermission();
+    // Request notification permission on Android 13+ only when in foreground
+    if (!isBackground) {
+      await _requestNotificationPermission();
+    }
 
     // Initialize for Android
     const AndroidInitializationSettings androidSettings =
