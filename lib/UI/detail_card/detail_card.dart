@@ -127,6 +127,10 @@ class _DetailCardState extends State<DetailCard> {
                 const SizedBox(height: 12),
                 _distanceCard(theme, cs),
                 const SizedBox(height: 16),
+                _qrSection(theme, cs),
+                const SizedBox(height: 16),
+                _capacitySection(theme, cs),
+                const SizedBox(height: 16),
                 _hoursCard(theme, cs, isOpen),
                 const SizedBox(height: 16),
                 _categoryChip(theme, cs),
@@ -134,8 +138,6 @@ class _DetailCardState extends State<DetailCard> {
                 if (shopData.tags.isNotEmpty) _tagsSection(theme, cs),
                 if (shopData.tags.isNotEmpty) const SizedBox(height: 24),
                 _reviewsSection(theme, cs),
-                const SizedBox(height: 24),
-                _qrSection(theme, cs),
                 const SizedBox(height: 32),
               ],
             ),
@@ -215,7 +217,7 @@ class _DetailCardState extends State<DetailCard> {
     child: Row(mainAxisSize: MainAxisSize.min, children: [
       Icon(Icons.local_offer_rounded, size: 16, color: cs.onPrimaryContainer),
       const SizedBox(width: 6),
-      Text(shopData.couponAmount, style: theme.textTheme.labelLarge?.copyWith(
+      Text("${shopData.couponAmount.toStringAsFixed(0)}% OFF", style: theme.textTheme.labelLarge?.copyWith(
         color: cs.onPrimaryContainer, fontWeight: FontWeight.w800, letterSpacing: 0.5)),
     ]),
   );
@@ -285,6 +287,75 @@ class _DetailCardState extends State<DetailCard> {
       Text(label, style: theme.textTheme.labelSmall?.copyWith(
         color: cs.onSurfaceVariant, fontSize: 10)),
     ]);
+  }
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // Shop Capacity
+  // ═══════════════════════════════════════════════════════════════════════════
+  Widget _capacitySection(ThemeData theme, ColorScheme cs) {
+    // Simulated capacity — in production this would come from a live API
+    final occupancyPercent = ((shopData.id.hashCode.abs() % 60) + 20) / 100.0;
+    final freePercent = 1.0 - occupancyPercent;
+    final freeLabel = '${(freePercent * 100).round()}% free';
+
+    Color barColor;
+    String statusText;
+    IconData statusIcon;
+    if (freePercent >= 0.5) {
+      barColor = Colors.green;
+      statusText = 'Plenty of space';
+      statusIcon = Icons.check_circle_rounded;
+    } else if (freePercent >= 0.25) {
+      barColor = Colors.orange;
+      statusText = 'Moderately busy';
+      statusIcon = Icons.info_rounded;
+    } else {
+      barColor = Colors.red;
+      statusText = 'Almost full';
+      statusIcon = Icons.warning_rounded;
+    }
+
+    return _infoContainer(cs, child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(children: [
+          Icon(statusIcon, size: 20, color: barColor),
+          const SizedBox(width: 8),
+          Text('Current Capacity', style: theme.textTheme.titleSmall?.copyWith(
+            fontWeight: FontWeight.w700, color: cs.onSurface)),
+          const Spacer(),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: barColor.withOpacity(0.12),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(statusText, style: theme.textTheme.labelSmall?.copyWith(
+              color: barColor, fontWeight: FontWeight.w700, fontSize: 10)),
+          ),
+        ]),
+        const SizedBox(height: 12),
+        // Progress bar
+        ClipRRect(
+          borderRadius: BorderRadius.circular(6),
+          child: SizedBox(
+            height: 10,
+            child: LinearProgressIndicator(
+              value: freePercent,
+              backgroundColor: cs.outlineVariant.withOpacity(0.3),
+              color: barColor,
+            ),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Text(freeLabel, style: theme.textTheme.labelSmall?.copyWith(
+            color: barColor, fontWeight: FontWeight.w600)),
+          Text('Live estimate', style: theme.textTheme.labelSmall?.copyWith(
+            color: cs.onSurfaceVariant, fontSize: 10)),
+        ]),
+      ],
+    ));
   }
 
   // ═══════════════════════════════════════════════════════════════════════════

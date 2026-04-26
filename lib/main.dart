@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'UI/small_card/small_card.dart';
 import 'services/notification_service.dart';
+import 'widget/main_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,7 +11,31 @@ void main() async {
   final notificationService = NotificationService();
   await notificationService.initialize();
   notificationService.startTestNotifications();
-  
+
+  // Mock shop data for the home screen widget
+  final widgetShop = ShopData(
+    id: "shop_vibe_77",
+    name: "Neon Espresso & Co.",
+    description: "A futuristic coffee lounge featuring cyber-industrial aesthetics, premium roasts, and high-speed fiber for power users.",
+    couponAmount: 15,
+    location: (48.135122, 11.581981),
+    openingTime: DateTime(2026, 4, 26, 08, 00),
+    closingTime: DateTime(2026, 4, 26, 23, 30),
+    tags: ["Premium", "Fast WiFi", "Quiet Zone", "Late Night"],
+    imageUrl: "https://baristaroyal.de/cdn/shop/articles/2022-04-28-Cafe_Guide_Munchen-unsplash-218506.jpg?v=1719300386&width=1500",
+    rank: 1,
+    category: "Food & Beverage",
+    payone_z_score: 2.84,
+  );
+
+  // Update home screen widget
+  ShopHomeWidget.update(
+    shopData: widgetShop,
+    weatherTemp: '22°C',
+    weatherCategory: 'sunny',
+    travelTime: '12 min',
+  );
+
   runApp(const MyApp());
 }
 
@@ -50,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
       id: "shop_vibe_77",
       name: "Neon Espresso & Co.",
       description: "A futuristic coffee lounge featuring cyber-industrial aesthetics, premium roasts, and high-speed fiber for power users.",
-      couponAmount: "15",
+      couponAmount: 15,
       location: (48.135122, 11.581981), // Latitude, Longitude
       openingTime: DateTime(2026, 4, 26, 08, 00),
       closingTime: DateTime(2026, 4, 26, 23, 30),

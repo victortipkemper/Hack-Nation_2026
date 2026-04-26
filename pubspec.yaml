@@ -43,6 +43,7 @@ dependencies:
   flutter_local_notifications: ^17.0.0
   nobodywho: 0.5.3-rc1
   geolocator: ^14.0.2
+  home_widget: ^0.9.1
 
 dev_dependencies:
   flutter_test:
