@@ -1,16 +1,13 @@
-# hacknation26
+# CITY WALLET
 
-A new Flutter project.
+**CITY WALLET** is a working end-to-end MVP for an AI-powered city wallet that detects the most relevant local offer for a user in real time, generates it dynamically, and makes it redeemable through a simulated checkout.
 
-## Getting Started
+## Overview
+Built for the Hackathon Challenge, this project focuses on a mobile user experience that surfaces locally relevant offers in everyday situations. These are not static coupons but dynamically generated, context-aware recommendations grounded in real-time signals:
+*   Weather
+*   Time of day
+*   Location
 
-This project is a starting point for a Flutter application.
+## A Living Wallet
+This solution works as a real-time context layer. Not a static database of offers. Offers don't exist until the moment they are needed; they are generated specifically for the user, the location, and the minute.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
